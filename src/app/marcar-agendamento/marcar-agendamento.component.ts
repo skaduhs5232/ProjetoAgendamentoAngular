@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; 
 import { API_PSICOLOGOS, MAIN_URL, Psicologo } from '../../interfaces/psicologo';
+import { LoaderComponentComponent } from '../loader-component/loader-component.component';
 
 @Component({
   selector: 'app-marcar-agendamento',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LoaderComponentComponent],
   templateUrl: './marcar-agendamento.component.html',
-  styleUrls: ['../scss/marcar-agendamento.component.scss', '../scss/form.component.scss','../scss/loader.component.scss']
+  styleUrls: ['../scss/marcar-agendamento.component.scss', '../scss/form.component.scss','../loader-component/loader-component.component.scss']
 })
 export class MarcarAgendamentoComponent {
   form: FormGroup;
@@ -17,6 +18,7 @@ export class MarcarAgendamentoComponent {
   psychologists: Psicologo[] = [];
   loadingPsychologists = false;
   loadingHorarios = false;
+  isLoading = signal(false)
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -194,6 +196,9 @@ export class MarcarAgendamentoComponent {
     });
 
     this.loading = true;
+    this.isLoading.set(true);
+    console.log(this.isLoading());
+    
 
     try {
       const mainResponse = await fetch(this.mainURL, {
@@ -229,6 +234,9 @@ export class MarcarAgendamentoComponent {
       );
     } finally {
       this.loading = false;
+      this.isLoading.set(false);
+      console.log(this.isLoading());
+      
     }
   }
 }
