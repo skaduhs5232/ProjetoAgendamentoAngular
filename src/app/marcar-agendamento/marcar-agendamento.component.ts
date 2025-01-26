@@ -3,6 +3,7 @@ import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; 
 import { API_PSICOLOGOS, MAIN_URL, Psicologo } from '../../interfaces/psicologo';
 import { LoaderComponentComponent } from '../loader-component/loader-component.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-marcar-agendamento',
@@ -20,7 +21,7 @@ export class MarcarAgendamentoComponent {
   loadingHorarios = false;
   isLoading = signal(false)
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group({
       Nome: ['', Validators.required],
       Psicólogo: ['', Validators.required],
@@ -31,6 +32,10 @@ export class MarcarAgendamentoComponent {
   }
 
   ngOnInit() {
+    if (!localStorage.getItem('isLoggedIn')) {
+      this.router.navigate(['/login']);
+      return;
+    }
     this.setMinDate();
     this.loadPsychologists();
 
