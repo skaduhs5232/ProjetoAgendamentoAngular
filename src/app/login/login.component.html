@@ -1,13 +1,63 @@
-<!-- From Uiverse.io by MikeAndrewDesigner -->
 <div class="login-container">
-  <div class="login wrap">
-    <div class="h1">Login</div>
-    <form (ngSubmit)="onLogin()">
-      <input
-        pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
-        placeholder="Email" [(ngModel)]="email" id="email" name="email" type="text">
-      <input placeholder="Password" id="password" [(ngModel)]="password" name="password" type="password">
-      <input value="Login" class="btn" type="submit">
-    </form>
+  <div class="wrapper">
+    <div class="card-switch">
+      <label class="switch">
+        <input class="toggle" type="checkbox">
+        <span class="slider"></span>
+        <span class="card-side"></span>
+        <div class="flip-card__inner">
+
+          <!-- Formulário de Login -->
+          <div class="flip-card__front">
+            <div class="title">Log in</div>
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="flip-card__form">
+              <input formControlName="email" type="email" placeholder="Email" class="flip-card__input">
+              <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error">
+                <small *ngIf="loginForm.get('email')?.errors?.['required']">O email é obrigatório.</small>
+                <small *ngIf="loginForm.get('email')?.errors?.['email']">Digite um email válido.</small>
+              </div>
+
+              <input formControlName="senha" type="password" placeholder="Password" class="flip-card__input">
+              <div *ngIf="loginForm.get('senha')?.invalid && loginForm.get('senha')?.touched" class="error">
+                <small *ngIf="loginForm.get('senha')?.errors?.['required']">A senha é obrigatória.</small>
+                <small *ngIf="loginForm.get('senha')?.errors?.['minlength']">A senha deve ter pelo menos 4
+                  caracteres.</small>
+              </div>
+
+              <button type="submit" class="flip-card__btn" [disabled]="loginForm.invalid">Let`s go!</button>
+            </form>
+          </div>
+
+          <!-- Formulário de Cadastro -->
+          <div class="flip-card__back">
+            <div class="title">Sign up</div>
+            <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="flip-card__form">
+              <input formControlName="nome" type="text" placeholder="Name" class="flip-card__input">
+              <div *ngIf="signupForm.get('nome')?.invalid && signupForm.get('nome')?.touched" class="error">
+                <small *ngIf="signupForm.get('nome')?.errors?.['required']">O nome é obrigatório.</small>
+                <small *ngIf="signupForm.get('nome')?.errors?.['minlength']">O nome deve ter pelo menos 3
+                  caracteres.</small>
+              </div>
+
+              <input formControlName="email" type="email" placeholder="Email" class="flip-card__input">
+              <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" class="error">
+                <small *ngIf="signupForm.get('email')?.errors?.['required']">O email é obrigatório.</small>
+                <small *ngIf="signupForm.get('email')?.errors?.['email']">Digite um email válido.</small>
+              </div>
+
+              <input formControlName="senha" type="password" placeholder="Password" class="flip-card__input">
+              <div *ngIf="signupForm.get('senha')?.invalid && signupForm.get('senha')?.touched" class="error">
+                <small *ngIf="signupForm.get('senha')?.errors?.['required']">A senha é obrigatória.</small>
+                <small *ngIf="signupForm.get('senha')?.errors?.['minlength']">A senha deve ter pelo menos 4
+                  caracteres.</small>
+              </div>
+
+              <button type="submit" class="flip-card__btn" [disabled]="signupForm.invalid">Confirm!</button>
+            </form>
+          </div>
+
+        </div>
+      </label>
+    </div>
   </div>
 </div>
